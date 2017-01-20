@@ -2,11 +2,11 @@
 
 # A script to import weather data into MySQL
 
-IMPORTFILE=/home/ec2-user/data_import.csv
-AIRPORTIDS=/home/ec2-user/airportids.txt
+IMPORTFILE="$PWD/data_import.csv"
+AIRPORTIDS="$PWD/airportids.txt"
 let YEAR=1997
 
-mysql -e "create database if not exists weather_data;" -u root 
+mysql -e "create database if not exists weather_data;"
 
 while [ $YEAR -le $(date +"%Y") ] ; do 
   while read AIRPORTID; do 
@@ -38,10 +38,10 @@ while [ $YEAR -le $(date +"%Y") ] ; do
       CloudCover VARCHAR(255),
       Events VARCHAR(255),
       WindDirDegrees VARCHAR(255)
-    );" -u root
+    );"
 
 
-    mysql -e "use weather_data; LOAD DATA INFILE '$IMPORTFILE' INTO TABLE $AIRPORTID FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 2 ROWS;" -u root 
+    mysql -e "use weather_data; LOAD DATA INFILE '$IMPORTFILE' INTO TABLE $AIRPORTID FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 2 ROWS;" 
   done < $AIRPORTIDS
 
   let YEAR=$YEAR+1

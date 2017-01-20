@@ -3,13 +3,13 @@
 # A script to incrementaly load weather data into MySQL.
 # Looks for dayly updates and imports them.
 
-IMPORTFILE=/home/ec2-user/yesterdays_data_import.csv
-AIRPORTIDS=/home/ec2-user/airportids.txt
+IMPORTFILE="$PWD/yesterdays_data_import.csv"
+AIRPORTIDS="$PWD/airportids.txt"
 YEAR=$(date --date="2 days ago" +"%Y")
 MONTH=$(date --date="2 days ago" +"%-m")
 DAY=$(date --date="2 days ago" +"%-d")
 
-mysql -e "create database if not exists weather_data;" -u root
+mysql -e "create database if not exists weather_data;"
 
 while read AIRPORTID; do 
   echo Loading data for airport $AIRPORTID for the $MONTH/$DAY/$YEAR...
@@ -41,9 +41,9 @@ while read AIRPORTID; do
     CloudCover VARCHAR(255),
     Events VARCHAR(255),
     WindDirDegrees VARCHAR(255)
-  );" -u root
+  );"
 
 
-  mysql -e "use weather_data; LOAD DATA INFILE '$IMPORTFILE' INTO TABLE $AIRPORTID FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 2 ROWS;" -u root 
+  mysql -e "use weather_data; LOAD DATA INFILE '$IMPORTFILE' INTO TABLE $AIRPORTID FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 2 ROWS;"
 done < $AIRPORTIDS
 
