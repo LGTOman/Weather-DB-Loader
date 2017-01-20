@@ -14,7 +14,6 @@ mysql -e "create database if not exists weather_data;"
 while read AIRPORTID; do 
   echo Loading data for airport $AIRPORTID for the $MONTH/$DAY/$YEAR...
   wget -q -O $IMPORTFILE  "http://www.wunderground.com/history/airport/$AIRPORTID/$YEAR/$MONTH/$DAY/CustomHistory.html?dayend=$DAY&monthend=$MONTH&yearend=$YEAR&req_city=&req_state=&req_statename=&reqdb.zip=&reqdb.magic=&reqdb.wmo=&format=1"
-  cat $IMPORTFILE
 
   mysql -e "use weather_data;
     create table if not exists $AIRPORTID (
@@ -44,6 +43,6 @@ while read AIRPORTID; do
   );"
 
 
-  mysql -e "use weather_data; LOAD DATA INFILE '$IMPORTFILE' INTO TABLE $AIRPORTID FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 2 ROWS;"
+  mysql -e "use weather_data; LOAD DATA LOCAL INFILE '$IMPORTFILE' INTO TABLE $AIRPORTID FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 2 ROWS;"
 done < $AIRPORTIDS
 

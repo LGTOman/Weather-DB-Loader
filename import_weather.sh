@@ -41,7 +41,7 @@ while [ $YEAR -le $(date +"%Y") ] ; do
     );"
 
 
-    mysql -e "use weather_data; LOAD DATA INFILE '$IMPORTFILE' INTO TABLE $AIRPORTID FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 2 ROWS;" 
+    mysql -e "use weather_data; LOAD DATA LOCAL INFILE '$IMPORTFILE' INTO TABLE $AIRPORTID FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 2 ROWS;" 
   done < $AIRPORTIDS
 
   let YEAR=$YEAR+1
